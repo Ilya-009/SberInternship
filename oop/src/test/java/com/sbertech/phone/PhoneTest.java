@@ -1,18 +1,13 @@
 package com.sbertech.phone;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PhoneTest {
 
-    private static Phone phone;
-
-    @BeforeAll
-    static void beforeAll() {
-        phone = new Phone("88005553535", "iPhone 13 Pro Max");
-    }
+    private static final Phone phone = new Phone("88005553535", "iPhone 13 Pro Max");
 
     @Test
     void receiveCall() {

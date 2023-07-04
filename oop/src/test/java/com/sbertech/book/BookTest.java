@@ -1,19 +1,13 @@
 package com.sbertech.book;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class BookTest {
 
-    static Book book;
-
-    @BeforeAll
-    static void beforeAll() {
-        book = new Book(
-                "Harry Potter",
-                new Author("J. K. Rowling", Gender.FEMALE, "unknown"),
-                2005);
-    }
+    private static final Book book = new Book(
+            "Harry Potter",
+            new Author("J. K. Rowling", Gender.FEMALE, "unknown"),
+            2005);
 
     @Test
     void getName() {

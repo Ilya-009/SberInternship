@@ -4,23 +4,23 @@ import java.util.Arrays;
 
 class Matrix {
     private final int rowCount;
-    private final int colCount;
+    private final int columnCount;
     double[][] values;
 
-    public Matrix(int n, int m) {
-        rowCount = n;
-        colCount = m;
-        values = new double[rowCount][colCount];
+    public Matrix(int rowCount, int columnCount) {
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
+        values = new double[this.rowCount][this.columnCount];
 
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < colCount; j++) {
+        for (int i = 0; i < this.rowCount; i++) {
+            for (int j = 0; j < this.columnCount; j++) {
                 values[i][j] = Math.random() % 10;
             }
         }
     }
 
     public void setValue(int rowIndex, int colIndex, double value) {
-        if (rowIndex >= rowCount || colIndex >= colCount) {
+        if (rowIndex >= rowCount || colIndex >= columnCount) {
             throw new ArrayIndexOutOfBoundsException();
         }
 
@@ -28,7 +28,7 @@ class Matrix {
     }
 
     void sumTwoMatrix(double[][] matrix2) {
-        double[][] matrixSum = new double[rowCount][colCount];
+        double[][] matrixSum = new double[rowCount][columnCount];
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < rowCount; j++) {
@@ -50,7 +50,7 @@ class Matrix {
     }
 
     double[][] multiplyMatrices(double[][] secondMatrix) {
-        double[][] result = new double[rowCount][colCount];
+        double[][] result = new double[rowCount][columnCount];
 
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++) {

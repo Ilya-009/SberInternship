@@ -1,18 +1,12 @@
 package com.sbertech.circle;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CircleTest {
 
-    static Circle circle;
-
-    @BeforeAll
-    static void beforeAll() {
-        circle = new Circle(5, "blue");
-    }
+    private static final Circle circle = new Circle(5, "blue");
 
     @Test
     void area() {

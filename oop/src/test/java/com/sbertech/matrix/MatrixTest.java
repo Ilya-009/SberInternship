@@ -1,21 +1,18 @@
 package com.sbertech.matrix;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class MatrixTest {
-    static Matrix matrix;
-    static final double[][] anotherMatrix = new double[][] {
-            {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}
-    };
+    private static final Matrix matrix;
 
-    @BeforeAll
-    static void beforeAll() {
+    static {
         matrix = new Matrix(5, 5);
         matrix.printMatrix();
-
-        System.out.println();
     }
+
+    static final double[][] anotherMatrix = new double[][]{
+            {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}
+    };
 
     @Test
     void setValue() {

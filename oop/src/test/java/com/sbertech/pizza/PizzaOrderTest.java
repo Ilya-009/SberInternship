@@ -1,16 +1,14 @@
 package com.sbertech.pizza;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class PizzaOrderTest {
 
-    static PizzaOrder pizzaOrder;
-
-    @BeforeAll
-    static void beforeAll() {
-        pizzaOrder = new PizzaOrder("Margarita", PizzaSize.MEDIUM, true, "address");
-    }
+    private static final PizzaOrder pizzaOrder = new PizzaOrder(
+            "Margarita",
+            PizzaSize.MEDIUM,
+            true,
+            "address");
 
     @Test
     void order() {
