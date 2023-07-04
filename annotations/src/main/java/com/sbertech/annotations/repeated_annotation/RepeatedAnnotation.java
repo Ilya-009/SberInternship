@@ -1,4 +1,4 @@
-package com.sbertech.annotations;
+package com.sbertech.annotations.repeated_annotation;
 
 import java.lang.annotation.*;
 
@@ -11,8 +11,3 @@ public @interface RepeatedAnnotation {
     String description() default "";
 }
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@interface RepeatedAnnotationContainer {
-    RepeatedAnnotation[] value();
-}

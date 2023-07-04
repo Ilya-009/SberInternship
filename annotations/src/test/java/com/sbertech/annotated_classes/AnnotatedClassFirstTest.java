@@ -2,7 +2,7 @@ package com.sbertech.annotated_classes;
 
 import com.sbertech.DataContainer;
 import com.sbertech.annotations.InheritedAnnotation;
-import com.sbertech.annotations.RepeatedAnnotation;
+import com.sbertech.annotations.repeated_annotation.RepeatedAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -43,12 +43,20 @@ class AnnotatedClassFirstTest {
 
     @Test
     void doStuff2() throws NoSuchMethodException {
-        Method method = AnnotatedClassFirst.class.getMethod("doStuff1", DataContainer.class);
-        RepeatedAnnotation annotation = method.getAnnotation(RepeatedAnnotation.class);
+        Method method = AnnotatedClassFirst.class.getMethod("doStuff2", DataContainer.class);
+        RepeatedAnnotation[] annotationsByType = method.getAnnotationsByType(RepeatedAnnotation.class);
+        RepeatedAnnotation firstAnnotation = annotationsByType[0];
+        RepeatedAnnotation secondAnnotation = annotationsByType[1];
 
+        Assertions.assertEquals(annotationsByType.length, 2);
         Assertions.assertThrows(NullPointerException.class, () -> annotatedClassFirst.doStuff2(null));
-        Assertions.assertEquals(annotation.hour(), 10);
-        Assertions.assertEquals(annotation.priority(), 1);
-        Assertions.assertEquals(annotation.description(), "method 1");
+
+        Assertions.assertEquals(firstAnnotation.hour(), 15);
+        Assertions.assertEquals(firstAnnotation.priority(), 2);
+        Assertions.assertEquals(firstAnnotation.description(), "method 2");
+
+        Assertions.assertEquals(secondAnnotation.hour(), 20);
+        Assertions.assertEquals(secondAnnotation.priority(), 2);
+        Assertions.assertEquals(secondAnnotation.description(), "method 2 copy");
     }
 }
