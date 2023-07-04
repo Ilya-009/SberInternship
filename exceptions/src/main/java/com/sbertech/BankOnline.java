@@ -3,6 +3,7 @@ package com.sbertech;
 import com.sbertech.exceptions.*;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BankOnline {
     private static final List<String> BLOCKED_CARDS = List.of(
@@ -13,15 +14,13 @@ public class BankOnline {
     private static final Double TRANSFER_LIMIT = 50000d;
 
     public void send(String cardNumber, Double money) throws
-            InvalidBankParametersException,
             InvalidCardNumberException,
             CardBlockedException,
             NegativeMoneyAmountException,
             OutOfLimitTransferException
     {
-        if (cardNumber == null || money == null) {
-            throw new InvalidBankParametersException();
-        }
+        Objects.requireNonNull(cardNumber);
+        Objects.requireNonNull(money);
 
         if (!cardNumber.matches(CARD_PATTERN)) {
             throw new InvalidCardNumberException();

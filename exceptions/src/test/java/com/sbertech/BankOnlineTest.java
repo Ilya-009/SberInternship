@@ -11,8 +11,8 @@ class BankOnlineTest {
     void send() {
         BankOnline bankOnline = new BankOnline();
 
-        assertThrows(InvalidBankParametersException.class, () -> bankOnline.send(null, null));
-        assertThrows(InvalidBankParametersException.class, () -> bankOnline.send(null, 10000d));
+        assertThrows(NullPointerException.class, () -> bankOnline.send(null, null));
+        assertThrows(NullPointerException.class, () -> bankOnline.send(null, 10000d));
         assertThrows(InvalidCardNumberException.class, () -> bankOnline.send("123456789548759", 10000d));
         assertThrows(InvalidCardNumberException.class, () -> bankOnline.send("12y3456789548759", 10000d));
         assertThrows(CardBlockedException.class, () -> bankOnline.send("2222222222222222", 10000d));
