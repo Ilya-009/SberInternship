@@ -1,8 +1,10 @@
 package com.sbertech;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -11,29 +13,35 @@ class MainTest {
 
     @Test
     void task1() {
-
-        // Task 1
         int[] streamValues = { 15, 50, 1, 10, 8, 4, 7, 54, 61, 5 };
         IntStream intStream = IntStream.of(streamValues);
-        intStream.filter(el -> getDigitsCount(el) == 2).forEachOrdered(System.out::println);
+        int[] orderedTwoDigitNumbers = intStream.filter(el -> getDigitsCount(el) == 2).sorted().toArray();
+        Assertions.assertArrayEquals(new int[] { 10, 15, 50, 54, 61 }, orderedTwoDigitNumbers);
 
         intStream = IntStream.of(streamValues);
         double averageValue = intStream.average().orElse(0);
-        System.out.printf("average value: %.2f", averageValue);
+        Assertions.assertEquals(averageValue, 21.5);
     }
 
     @Test
     void task3() {
         Random random = new Random();
         List<String> strValues = new ArrayList<>(List.of("string 1", "string 2", "string 3"));
+        Long[] generatedNumbers = IntStream.range(1, 4).mapToObj(index -> random.nextLong(100)).toArray(Long[]::new);
 
+        AtomicInteger index = new AtomicInteger(-1);
         Stream<StreamContainer> streamContainerStream = strValues.stream()
-                .map(str -> new StreamContainer(str, random.nextLong(100)));
+                .map(str -> {
+                    index.getAndIncrement();
+                    return new StreamContainer(str, generatedNumbers[index.get()]);
+                });
 
         List<StreamContainer> streamContainers = streamContainerStream.toList();
 
         System.out.println("StreamContainers' counts: ");
-        streamContainers.forEach(streamContainer -> System.out.println(streamContainer.getCount()));
+        Long[] containerCounts = streamContainers.stream().map(StreamContainer::getCount).toArray(Long[]::new);
+        Assertions.assertArrayEquals(generatedNumbers, containerCounts);
+
         Map<String, Long> resultMap = streamContainers.stream().collect(Collectors.toMap(StreamContainer::getName, StreamContainer::getCount));
         System.out.println(resultMap);
     }
@@ -48,7 +56,8 @@ class MainTest {
                 .flatMap(entry -> entry.getValue().stream().map(value -> new StreamContainer(entry.getKey(), value)));
         List<StreamContainer> streamContainerList = convertedMapToStream.toList();
         long count = streamContainerList.stream().count();
-        System.out.println(count);
+
+        Assertions.assertEquals(count, 8);
     }
 
     @Test
@@ -57,7 +66,7 @@ class MainTest {
 
         Stream<Boolean> booleanStream = booleanString.chars().mapToObj(el -> (char) el != '0');
         boolean logicAndResult = booleanStream.allMatch(stmt -> stmt);
-        System.out.println(logicAndResult);
+        Assertions.assertFalse(logicAndResult);
     }
 
     private int getDigitsCount(int digit) {
