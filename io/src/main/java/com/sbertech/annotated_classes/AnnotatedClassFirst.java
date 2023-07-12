@@ -45,7 +45,9 @@ public class AnnotatedClassFirst extends AnnotatedClassBase {
         }
 
         // Check files count in target directory
-        List<File> files = Arrays.stream(Objects.requireNonNull(new File(LOGS_DIR_PATH).listFiles())).filter(File::isFile).toList();
+        List<File> files = Arrays.stream(Objects.requireNonNull(new File(LOGS_DIR_PATH).listFiles()))
+                .filter(File::isFile)
+                .toList();
 
         if (files.size() > 2) {
             files.forEach(File::delete);
