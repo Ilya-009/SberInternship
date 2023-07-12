@@ -3,33 +3,26 @@ package com.sbertech.task3;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.URI;
-import java.net.http.HttpResponse;
+import java.net.http.HttpRequest;
 
-public class YandexHandlerBase extends ServiceHandlerBase {
+public class YandexHandlerBase<Q extends HttpRequest, S> extends ServiceHandlerBase <Q, S> {
 
-    public YandexHandlerBase(URI uri) {
-        super(uri);
+    @Override
+    protected boolean validateRequest(Q request) {
+        return request.uri() != null && !request.uri().toString().equals("") && request.uri().toString().contains("yandex");
     }
 
     @Override
-    protected boolean validateRequest() {
-        return uri != null && !uri.toString().equals("") && uri.toString().contains("yandex");
-    }
-
-    @Override
-    protected <T> boolean validateResponse(HttpResponse<T> httpResponse) {
-        if (httpResponse.statusCode() != 200) {
+    protected boolean validateResponse(S httpResponse) {
+        if (httpResponse == null) {
             return false;
         }
-
-        T body = httpResponse.body();
 
         try (
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)
         ) {
-            objectOutputStream.writeObject(body);
+            objectOutputStream.writeObject(httpResponse);
             objectOutputStream.flush();
 
             byte[] bodyBytes = outputStream.toByteArray();

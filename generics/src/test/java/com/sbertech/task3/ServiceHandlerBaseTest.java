@@ -4,28 +4,38 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.ExecutionException;
+import java.net.http.HttpRequest;
 
 class ServiceHandlerBaseTest {
 
-    private static final URI GOOGLE_URI;
-    private static final URI YANDEX_URI;
+    private static final HttpRequest GOOGLE_REQUEST;
+    private static final HttpRequest YANDEX_REQUEST;
 
     static {
         try {
-            GOOGLE_URI = new URI("https://www.google.com/");
-            YANDEX_URI = new URI("https://yandex.ru/search/?text=java&lr=0&search_source=yaru_desktop_common");
+            var googleUri = new URI("https://www.google.com/");
+            var yandexUri = new URI("https://yandex.ru/search/?text=java&lr=0&search_source=yaru_desktop_common");
+
+            GOOGLE_REQUEST = HttpRequest.newBuilder()
+                .uri(googleUri)
+                .GET()
+                .build();
+
+            YANDEX_REQUEST = HttpRequest.newBuilder()
+                    .uri(yandexUri)
+                    .GET()
+                    .build();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static final ServiceHandlerBase GOOGLE_SERVICE_HANDLER = new GoogleServiceHandler(GOOGLE_URI);
-    private static final ServiceHandlerBase YANDEX_SERVICE_HANDLER = new YandexHandlerBase(YANDEX_URI);
+    private static final ServiceHandlerBase<HttpRequest, String> GOOGLE_SERVICE_HANDLER = new GoogleServiceHandler<>();
+    private static final ServiceHandlerBase<HttpRequest, Object> YANDEX_SERVICE_HANDLER = new YandexHandlerBase<>();
 
     @Test
-    void makeRequest() throws ExecutionException, InterruptedException {
-        String googleResponse = GOOGLE_SERVICE_HANDLER.makeRequest();
-        String yandexResponse = YANDEX_SERVICE_HANDLER.makeRequest();
+    void makeRequest() {
+        String s = GOOGLE_SERVICE_HANDLER.makeRequest(GOOGLE_REQUEST);
+        Object o = YANDEX_SERVICE_HANDLER.makeRequest(YANDEX_REQUEST);
     }
 }

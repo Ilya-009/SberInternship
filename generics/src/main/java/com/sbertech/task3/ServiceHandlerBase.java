@@ -1,43 +1,24 @@
 package com.sbertech.task3;
 
-import java.net.URI;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
-public abstract class ServiceHandlerBase {
-    protected URI uri;
-
-    public ServiceHandlerBase(URI uri) {
-        this.uri = uri;
-
-        boolean validationResult = validateRequest();
-
-        if (!validationResult) {
-            throw new IllegalArgumentException();
+public abstract class ServiceHandlerBase<Q extends HttpRequest, S> {
+    public S makeRequest(Q request) {
+        if (!validateRequest(request)) {
+            throw new IllegalArgumentException("Ошибка запроса");
         }
+
+        // Сделал это для удобства, чтобы не придумывать лишнего
+        S response = (S) "This is response";
+
+        if (!validateResponse(response)) {
+            throw new IllegalArgumentException("Ошибка ответа");
+        }
+
+        return response;
     }
 
-    public String makeRequest() throws ExecutionException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(uri)
-                .GET()
-                .build();
+    protected abstract boolean validateRequest(Q request);
 
-        HttpClient client = HttpClient.newHttpClient();
-        CompletableFuture<HttpResponse<String>> requestTask = client
-                .sendAsync(request, HttpResponse.BodyHandlers.ofString());
-
-        HttpResponse<String> httpResponse = requestTask.get();
-
-        boolean responseValidationResult = validateResponse(httpResponse);
-
-        return responseValidationResult ? httpResponse.body() : null;
-    }
-
-    protected abstract boolean validateRequest();
-
-    protected abstract <T> boolean validateResponse(HttpResponse<T> httpResponse);
+    protected abstract boolean validateResponse(S httpResponse);
 }
